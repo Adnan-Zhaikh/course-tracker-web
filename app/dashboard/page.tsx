@@ -1,12 +1,21 @@
 "use client"
 
 import { useState } from "react";
+import { Student, Enrollment } from "@/types";
 
-const student = {
+const student: Student = {
+    id: 1,
     name: "Adnan",
-    completedLectures: 8,
-    totalLectures: 10,
+    email: "adnan@gmai.com",
 };
+
+const enrollment: Enrollment = {
+    id: 1,
+    studentId: 1,
+    courseId: 1,
+    completedLectures: 8,
+    enrolledAt: "2026-03-15"
+}
 
 export default function DashboardPage() {
     const [count, setCount] = useState(0);
@@ -15,7 +24,7 @@ export default function DashboardPage() {
         <div>
             <h1>Dashboard</h1>
             <p>Student: {student.name}</p>
-            <p>Progress: {student.completedLectures}/{student.totalLectures} lectures</p>
+            <p>Completed: {enrollment.completedLectures} lectures</p>
         </div>
     )
 }
