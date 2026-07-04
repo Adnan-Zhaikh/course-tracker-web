@@ -1,6 +1,7 @@
 import Sidebar from "@/components/sidebar";
 import ProgressCard from "@/components/progress-card";
 import CertificateButton from "@/components/certificatebutton";
+import UpdateProgressButton from "@/components/update-progress-button";
 import { prisma } from "@/lib/prisma";
 
 export default async function DashboardPage() {
@@ -34,6 +35,7 @@ export default async function DashboardPage() {
             totalLectures={enrollment.course.totalLectures}
           />
           <CertificateButton progressPercent={progressPercent} />
+          <UpdateProgressButton />
         </div>
       </main>
     </div>
