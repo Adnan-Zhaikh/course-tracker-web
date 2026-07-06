@@ -27,8 +27,8 @@ export default function CertificateButton({ progressPercent }: CertificateButton
   const data = await res.json();
 
   // PDF generation with jspdf
-  const { jsPDF } = await import("jspdf");
-  const doc = new (jsPDF as any)();
+  const jspdf = await import("jspdf");
+  const doc = new jspdf.jsPDF();
 
   doc.setFontSize(24);
   doc.text("Certificate of Completion", 105, 40, { align: "center" });
