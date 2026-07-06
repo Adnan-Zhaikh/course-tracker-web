@@ -3,9 +3,15 @@ import ProgressCard from "@/components/progress-card";
 import CertificateButton from "@/components/certificatebutton";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 export default async function DashboardPage() {
+  const cookieStore = await cookies();
+  const session = cookieStore.get("session");
+  const studentId = parseInt(session?.value || "0");
+
   const enrollment = await prisma.enrollment.findFirst({
+    where: {studentId},
     include: {
       student: true,
       course: true,
@@ -13,8 +19,15 @@ export default async function DashboardPage() {
   });
   
   if (!enrollment) {
-    return <p>No enrollment found.</p>;
-  }
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <Sidebar />
+      <main className="flex-1 p-8">
+        <p className="text-gray-600">No enrollment found. Please contact your administrator.</p>
+      </main>
+    </div>
+  );
+}
   const completedCount = await prisma.completedLecture.count({
     where: { studentId: enrollment.studentId }
 });

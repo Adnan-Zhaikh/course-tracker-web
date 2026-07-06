@@ -15,6 +15,7 @@ async function main() {
     data: {
       name: "Adnan",
       email: "adnan@example.com",
+      password: "password123",
     },
   });
 
