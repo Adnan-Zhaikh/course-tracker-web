@@ -14,7 +14,7 @@ return (
         {courses.map((course) => (
             <div key={course.id} className="bg-white rounded-xl shadow p-6">
             <h2 className="text-lg font-semibold text-gray-800 mb-2">{course.title}</h2>
-            <p className="text-sm text-gray-500 mt-2 h-line">{course.description}</p>
+            <p className="text-sm text-gray-500 mt-2">{course.description}</p>
             <p className="text-sm text-gray-500 mt-2">{course.totalLectures} Lectures</p>
             </div>
             ))}

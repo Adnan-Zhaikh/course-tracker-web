@@ -14,7 +14,9 @@ export default function CertificateButton({ progressPercent }: CertificateButton
   async function handleDownload() {
   setLoading(true);
 
-  const res = await fetch("/api/certificate", { method: "GET" });
+  const res = await fetch("/api/certificate", { 
+    method: "GET" 
+  });
 
   if (!res.ok) {
     alert("Complete the course first");

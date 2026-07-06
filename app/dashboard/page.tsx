@@ -11,14 +11,17 @@ export default async function DashboardPage() {
       course: true,
     },
   });
+  const completedCount = await prisma.completedLecture.count({
+    where: { studentId: enrollment.studentId }
+});
 
   if (!enrollment) {
     return <p>No enrollment found.</p>;
   }
 
-  const progressPercent = Math.round(
-    (enrollment.completedLectures / enrollment.course.totalLectures) * 100
-  );
+ const progressPercent = Math.round(
+  (completedCount / enrollment.course.totalLectures) * 100
+);
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -31,7 +34,7 @@ export default async function DashboardPage() {
         <div className="flex flex-col gap-6 max-w-xl">
           <ProgressCard
             courseTitle={enrollment.course.title}
-            completedLectures={enrollment.completedLectures}
+            completedLectures={completedCount}
             totalLectures={enrollment.course.totalLectures}
           />
           <CertificateButton progressPercent={progressPercent} />
