@@ -36,3 +36,23 @@ export async function PATCH(request: NextRequest) {
 
   return NextResponse.json({ success: true, updated });
 }
+
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  const { studentId, courseId } = body;
+  
+  const existing = await prisma.enrollment.findFirst({
+    where: { studentId, courseId },
+  });
+
+  if (existing) {
+    return NextResponse.json(
+      {error: "Enrolled IN This already!"},
+      {status: 400}
+    )};
+
+  await prisma.enrollment.create({
+    data: {studentId, courseId}
+  });
+  return NextResponse.json({ success: true })
+}
