@@ -1,6 +1,7 @@
 import LectureCheckbox from "@/components/lectures-checkbox";
 import Sidebar from "@/components/sidebar";
 import { prisma } from "@/lib/prisma";
+import { BookOpen, CheckCircle } from "lucide-react";
 
 export default async function CoursePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -35,6 +36,10 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
                 studentId={3}
                 isCompleted={isCompleted}
               />
+              {isCompleted
+              ? <CheckCircle className="w-4 h-4 text-green-500"/>
+              : <BookOpen className="w-4 h-4 text-gray-400" />
+              }
               <h2 className="text-sm font-semibold text-gray-800">{lecture.title}</h2>
             </div>  
           );

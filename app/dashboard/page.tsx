@@ -1,8 +1,8 @@
 import Sidebar from "@/components/sidebar";
 import ProgressCard from "@/components/progress-card";
 import CertificateButton from "@/components/certificatebutton";
-import UpdateProgressButton from "@/components/update-progress-button";
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 
 export default async function DashboardPage() {
   const enrollment = await prisma.enrollment.findFirst({
@@ -11,13 +11,13 @@ export default async function DashboardPage() {
       course: true,
     },
   });
-  const completedCount = await prisma.completedLecture.count({
-    where: { studentId: enrollment.studentId }
-});
-
+  
   if (!enrollment) {
     return <p>No enrollment found.</p>;
   }
+  const completedCount = await prisma.completedLecture.count({
+    where: { studentId: enrollment.studentId }
+});
 
  const progressPercent = Math.round(
   (completedCount / enrollment.course.totalLectures) * 100
@@ -32,13 +32,14 @@ export default async function DashboardPage() {
         </h1>
         <p className="text-gray-500 mb-8">Here's your course progress</p>
         <div className="flex flex-col gap-6 max-w-xl">
+          <Link href={`/courses/${enrollment.course.id}`}>
           <ProgressCard
             courseTitle={enrollment.course.title}
             completedLectures={completedCount}
             totalLectures={enrollment.course.totalLectures}
           />
+          </Link>
           <CertificateButton progressPercent={progressPercent} />
-          <UpdateProgressButton />
         </div>
       </main>
     </div>

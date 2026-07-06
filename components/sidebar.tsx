@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { LayoutDashboard, BookOpen, LogOut } from "lucide-react";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
@@ -25,21 +26,26 @@ export default function Sidebar() {
       </div>
 
       <nav className="p-4 flex flex-col gap-3 flex-1">
-        {isOpen && (
-          <>
-            <a href="/dashboard" className="hover:text-blue-400">Dashboard</a>
-            <a href="/courses" className="hover:text-blue-400">Courses</a>
-          </>
-        )}
+        <a href="/dashboard" className="flex items-center gap-2 hover:text-blue-400">
+            <LayoutDashboard className="w-4 h-4" />
+            {isOpen && <span>Dashboard</span>}
+        </a>
+        
+        <a href="/courses" className="flex items-center gap-2 hover:text-blue-400">
+            <BookOpen className="w-4 h-4" />
+            {isOpen && <span>Courses</span>}
+        </a>
       </nav>
 
       <div className="p-4 border-t border-gray-700">
+
         <button
           onClick={handleLogout}
-          className="text-red-400 hover:text-red-300 text-sm w-full text-left"
-        >
-          {isOpen ? "→ Logout" : "→"}
-        </button>
+          className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm w-full text-left"
+          >
+          <LogOut className="w-4 h-4" />
+          {isOpen && <span>Logout</span>}
+      </button>
       </div>
     </div>
   );
