@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const runtime = "nodejs";
 export function middleware(request: NextRequest) {
   const session = request.cookies.get("session");
   const isLoginPage = request.nextUrl.pathname === "/login";
