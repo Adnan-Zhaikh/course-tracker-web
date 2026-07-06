@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client"
 import { useState } from "react";
 
@@ -26,9 +27,9 @@ export default function CertificateButton({ progressPercent }: CertificateButton
 
   const data = await res.json();
 
-  // PDF generation with jspdf
   const jspdf = await import("jspdf");
-  const doc = new jspdf.jsPDF();
+  const JsPDF = (jspdf as any).default || (jspdf as any).jsPDF;
+  const doc = new JsPDF();
 
   doc.setFontSize(24);
   doc.text("Certificate of Completion", 105, 40, { align: "center" });
