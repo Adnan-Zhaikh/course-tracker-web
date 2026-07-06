@@ -12,6 +12,7 @@ model Student {
   name        String
   email       String       @unique
   enrollments Enrollment[]
+  completedLectures CompletedLecture[]
   createdAt   DateTime     @default(now())
 }
 
@@ -21,6 +22,7 @@ model Course {
   description    String
   totalLectures  Int
   enrollments    Enrollment[]
+  lectures       Lecture[]
   createdAt      DateTime     @default(now())
 }
 
@@ -32,4 +34,23 @@ model Enrollment {
   enrolledAt         DateTime @default(now())
   student            Student  @relation(fields: [studentId], references: [id])
   course             Course   @relation(fields: [courseId], references: [id])
+}
+
+model Lecture {
+  id               Int                @id @default(autoincrement())
+  courseId         Int
+  title            String
+  order            Int
+  course           Course             @relation(fields: [courseId], references: [id])
+  completedBy      CompletedLecture[]
+}
+
+model CompletedLecture {
+  id         Int     @id @default(autoincrement())
+  studentId  Int
+  lectureId  Int
+  student    Student @relation(fields: [studentId], references: [id])
+  lecture    Lecture @relation(fields: [lectureId], references: [id])
+
+  @@unique([studentId, lectureId])
 }

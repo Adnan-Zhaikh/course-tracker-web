@@ -1,8 +1,16 @@
 import { PrismaClient } from "@prisma/client";
+import { title } from "process";
 
 const prisma = new PrismaClient();
 
 async function main() {
+  
+  await prisma.completedLecture.deleteMany();
+  await prisma.lecture.deleteMany();
+  await prisma.enrollment.deleteMany();
+  await prisma.course.deleteMany();
+  await prisma.student.deleteMany();
+  
   const student = await prisma.student.create({
     data: {
       name: "Adnan",
@@ -25,6 +33,27 @@ async function main() {
       completedLectures: 8,
     },
   });
+  const lectures = [
+    "Introduction to Next.js",
+    "App Router Basics",
+    "Typescript Fundamentals",
+    "Tailwind CSS Layout",
+    "PostgreSQL Setup",
+    "API Routes",
+    "Authentication",
+    "Certificate Generation",
+    "Deployment",
+  ];
+
+  for (let i = 0; i < lectures.length; i++) {
+    await prisma.lecture.create({
+      data: {
+        courseId: course.id,
+        title: lectures[i],
+        order: i + 1,
+      },
+    });
+  }
 
   console.log("Seeded successfully");
 }
