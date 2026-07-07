@@ -43,7 +43,12 @@ export default async function DashboardPage() {
   );
 }
   const completedCount = await prisma.completedLecture.count({
-    where: { studentId: enrollment.studentId }
+  where: { 
+    studentId: enrollment.studentId,
+    lecture: {
+      courseId: enrollment.courseId
+    }
+  }
 });
 
  const progressPercent = Math.round(
