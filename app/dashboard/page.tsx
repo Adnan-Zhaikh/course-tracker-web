@@ -79,7 +79,9 @@ export default async function DashboardPage() {
                     totalLectures={enrollment.course.totalLectures}
                   />
                 </Link>
-                <CertificateButton progressPercent={progressPercent} />
+                <CertificateButton 
+                progressPercent={progressPercent}
+                courseId={enrollment.courseId} />
               </div>
             );
           })}

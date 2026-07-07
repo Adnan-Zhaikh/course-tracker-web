@@ -6,18 +6,17 @@ import { useState } from "react";
 
 interface CertificateButtonProps {
   progressPercent: number;
+  courseId: number;
 }
 
-export default function CertificateButton({ progressPercent }: CertificateButtonProps) {
+export default function CertificateButton({ progressPercent, courseId }: CertificateButtonProps) {
   const isComplete = progressPercent === 100;
   const [loading, setLoading] = useState(false);
     
   async function handleDownload() {
   setLoading(true);
 
-  const res = await fetch("/api/certificate", { 
-    method: "GET" 
-  });
+  const res = await fetch(`/api/certificate?courseId=${courseId}`, { method: "GET" });
 
   if (!res.ok) {
     alert("Complete the course first");
