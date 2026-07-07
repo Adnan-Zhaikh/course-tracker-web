@@ -3,6 +3,7 @@ import Sidebar from "@/components/sidebar";
 import { prisma } from "@/lib/prisma";
 import { BookOpen, CheckCircle } from "lucide-react";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 export default async function CoursePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -30,6 +31,9 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
   <div className="flex h-screen bg-gray-100">
     <Sidebar />
     <main className="flex-1 p-8">
+      <Link href="/dashboard" className="inline-block mb-6 text-sm text-blue-500 hover:underline">
+  ← Back to Dashboard
+</Link>
       <h1 className="text-2xl font-bold text-gray-800 mb-6">{course.title}</h1>
       <div className="grid grid-cols-1 gap-3">
         {lectures.map((lecture) => {
