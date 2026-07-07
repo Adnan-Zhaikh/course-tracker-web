@@ -2,10 +2,14 @@ import LectureCheckbox from "@/components/lectures-checkbox";
 import Sidebar from "@/components/sidebar";
 import { prisma } from "@/lib/prisma";
 import { BookOpen, CheckCircle } from "lucide-react";
+import { cookies } from "next/headers";
 
 export default async function CoursePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const courseId = parseInt(id);
+  const cookieStore = await cookies();
+  const session = cookieStore.get("session");
+  const studentId = parseInt(session?.value || "0");
     
     const course = await prisma.course.findUnique({
         where: { id: courseId }
@@ -14,8 +18,9 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
         where: { courseId }
     });
     const completedLectures = await prisma.completedLecture.findMany({
-        where: { studentId: 3 }
+        where: { studentId }
     });
+
 
     if(!course){
         return <p>Course Not found</p>
@@ -33,7 +38,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
             <div key={lecture.id} className="bg-white rounded-xl shadow p-3 flex items-center gap-4">
               <LectureCheckbox
                 lectureId={lecture.id}
-                studentId={3}
+                studentId={studentId}
                 isCompleted={isCompleted}
               />
               {isCompleted
