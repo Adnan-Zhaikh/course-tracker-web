@@ -21,7 +21,7 @@ export default function EnrollButton({ courseId, studentId }: props) {
   });
 
   if (res.ok) {
-    window.location.href = "/dashboard";
+    window.location.href = `/courses/${courseId}`;
   } else {
     const data = await res.json();
     alert(data.error || "Enrollment failed");

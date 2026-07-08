@@ -82,6 +82,12 @@ export default async function DashboardPage() {
                 <CertificateButton 
                 progressPercent={progressPercent}
                 courseId={enrollment.courseId} />
+                <Link 
+                  href={`/courses/${enrollment.course.id}`}
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg text-center block"
+                >
+                  Start Learning →
+                </Link>
               </div>
             );
           })}
