@@ -1,7 +1,6 @@
-import LectureCheckbox from "@/components/lectures-checkbox";
+import LectureCard from "@/components/lecture-card";
 import Sidebar from "@/components/sidebar";
 import { prisma } from "@/lib/prisma";
-import { BookOpen, CheckCircle } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
@@ -16,7 +15,8 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
         where: { id: courseId }
     });
     const lectures = await prisma.lecture.findMany({
-        where: { courseId }
+        where: { courseId },
+        orderBy: { order: "asc"}
     });
     const completedLectures = await prisma.completedLecture.findMany({
         where: { studentId }
@@ -34,23 +34,19 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
       <Link href="/dashboard" className="inline-block mb-6 text-sm text-blue-500 hover:underline">
   ← Back to Dashboard
 </Link>
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">{course.title}</h1>
-      <div className="grid grid-cols-1 gap-3">
+      <h1 className="text-2xl font-bold text-green-900 mb-6">{course.title}</h1>
+      <div className="grid grid-cols-1 gap-3 max-w-2xl">
         {lectures.map((lecture) => {
           const isCompleted = completedLectures.some(cl => cl.lectureId === lecture.id);
           return (
-            <div key={lecture.id} className="bg-white rounded-xl shadow p-3 flex items-center gap-4">
-              <LectureCheckbox
-                lectureId={lecture.id}
-                studentId={studentId}
-                isCompleted={isCompleted}
-              />
-              {isCompleted
-              ? <CheckCircle className="w-4 h-4 text-green-500"/>
-              : <BookOpen className="w-4 h-4 text-gray-400" />
-              }
-              <h2 className="text-sm font-semibold text-gray-800">{lecture.title}</h2>
-            </div>  
+            <LectureCard
+              key={lecture.id}
+              title={lecture.title}
+              notes={lecture.notes}
+              lectureId={lecture.id}
+              studentId={studentId}
+              isCompleted={isCompleted}
+            />
           );
         })}
       </div>   

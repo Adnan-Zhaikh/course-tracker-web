@@ -42,6 +42,7 @@ model Lecture {
   courseId         Int
   title            String
   order            Int
+  notes            String?
   course           Course             @relation(fields: [courseId], references: [id])
   completedBy      CompletedLecture[]
 }
