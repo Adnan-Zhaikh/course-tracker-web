@@ -15,12 +15,14 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile hamburger button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 bg-gray-900 text-white p-2 rounded-lg"
-      >
-        {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-      </button>
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="lg:hidden fixed top-4 left-4 z-50 bg-gray-900 text-white p-2 rounded-lg"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+      )}
 
       {/* Overlay on mobile */}
       {isOpen && (
@@ -39,11 +41,12 @@ export default function Sidebar() {
       `}>
         <div className="flex items-center justify-between p-4 border-b border-gray-700">
           <span className="font-bold text-lg">Course Tracker</span>
+              
           <button
             onClick={() => setIsOpen(false)}
-            className="lg:hidden text-gray-400 hover:text-white"
+            className="lg:hidden"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 

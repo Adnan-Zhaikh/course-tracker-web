@@ -30,7 +30,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
     return (
   <div className="flex min-h-screen bg-gray-100">
     <Sidebar />
-    <main className="flex-1 p-8">
+    <main className="flex-1 p-4 pt-16 lg:p-8 lg:pt-8 overflow-y-auto">
       <Link href="/dashboard" className="inline-block mb-6 text-sm text-blue-500 hover:underline">
   ← Back to Dashboard
 </Link>
