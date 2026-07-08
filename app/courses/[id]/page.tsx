@@ -28,7 +28,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
     }
 
     return (
-  <div className="flex h-screen bg-gray-100">
+  <div className="flex min-h-screen bg-gray-100">
     <Sidebar />
     <main className="flex-1 p-8">
       <Link href="/dashboard" className="inline-block mb-6 text-sm text-blue-500 hover:underline">

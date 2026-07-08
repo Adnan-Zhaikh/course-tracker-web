@@ -5,7 +5,7 @@ export default async function CoursePage() {
     const courses = await prisma.course.findMany();
 
 return (
-  <div className="flex h-screen bg-gray-100">
+  <div className="flex min-h-screen bg-gray-100">
     <Sidebar />
     <main className="flex-1 p-8">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Courses</h1>

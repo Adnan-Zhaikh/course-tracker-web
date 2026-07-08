@@ -55,14 +55,14 @@ export default async function DashboardPage() {
   const studentName = enrollments[0].student.name;
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="flex-1 p-4 pt-16 lg:p-8 lg:pt-8 overflow-y-auto">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">
           Welcome, {studentName}
         </h1>
         <p className="text-gray-500 mb-8">Here's your course progress</p>
-        <div className="flex flex-col gap-6 max-w-xl">
+        <div className="flex flex-col gap-6 w-full max-w-xl">
           {enrollments.map((enrollment) => {
             const completedCount = allCompleted.filter(
               cl => cl.lecture.courseId === enrollment.courseId
