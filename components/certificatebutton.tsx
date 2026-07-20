@@ -7,9 +7,10 @@ import { useState } from "react";
 interface CertificateButtonProps {
   progressPercent: number;
   courseId: number;
+  quizPassed: boolean;
 }
 
-export default function CertificateButton({ progressPercent, courseId }: CertificateButtonProps) {
+export default function CertificateButton({ progressPercent, courseId, quizPassed }: CertificateButtonProps) {
   const isComplete = progressPercent === 100;
   const [loading, setLoading] = useState(false);
     
@@ -45,17 +46,26 @@ export default function CertificateButton({ progressPercent, courseId }: Certifi
   setLoading(false);
 }
   return (
+  <div className="flex flex-col gap-2">
+    {isComplete && !quizPassed && (
+      
+       <a href={`/courses/${courseId}/quiz`}
+        className="w-full py-3 px-6 rounded-xl font-semibold text-white text-center bg-blue-500 hover:bg-blue-600 transition-all"
+      >
+        📝 Take Quiz to Unlock Certificate
+      </a>
+    )}
     <button
-      onClick = {handleDownload}
-      disabled={!isComplete}
+      onClick={handleDownload}
+      disabled={!isComplete || !quizPassed}
       className={`w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-300 ${
-        isComplete
+        isComplete && quizPassed
           ? "bg-green-500 hover:bg-green-600 cursor-pointer"
           : "bg-gray-300 cursor-not-allowed"
       }`}
     >
-      {isComplete ? "⬇ Download Certificate" : "🔒 Complete course to unlock certificate"}
-      
+      {isComplete && quizPassed ? "⬇ Download Certificate" : "🔒 Complete course to unlock certificate"}
     </button>
-  );
+  </div>
+);
 }

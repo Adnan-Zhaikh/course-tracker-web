@@ -52,6 +52,16 @@ export default async function DashboardPage() {
     where: { id: { notIn: enrolledCourseIds } }
   });
 
+  const quizAttempt = await prisma.quizAttempt.findFirst({
+    where: {
+      studentId,
+      passed: true
+    }
+  });
+  const passedQuizzes = await prisma.quizAttempt.findMany({
+    where: { studentId, passed: true },
+    include: { quiz: true }
+  });
   const studentName = enrollments[0].student.name;
 
   return (
@@ -70,6 +80,7 @@ export default async function DashboardPage() {
             const progressPercent = Math.round(
               (completedCount / enrollment.course.totalLectures) * 100
             );
+            const quizPassed = passedQuizzes.some(a => a.quiz.courseId === enrollment.courseId);
             return (
               <div key={enrollment.id} className="flex flex-col gap-3">
                 <Link href={`/courses/${enrollment.course.id}`}>
@@ -81,7 +92,8 @@ export default async function DashboardPage() {
                 </Link>
                 <CertificateButton 
                 progressPercent={progressPercent}
-                courseId={enrollment.courseId} />
+                courseId={enrollment.courseId}
+                quizPassed={quizPassed} />
                 <Link 
                   href={`/courses/${enrollment.course.id}`}
                   className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg text-center block"

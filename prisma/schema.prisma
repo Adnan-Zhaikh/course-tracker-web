@@ -15,6 +15,7 @@ model Student {
   enrollments Enrollment[]
   completedLectures CompletedLecture[]
   createdAt   DateTime     @default(now())
+  quizAttempts QuizAttempt[]
 }
 
 model Course {
@@ -25,6 +26,7 @@ model Course {
   enrollments    Enrollment[]
   lectures       Lecture[]
   createdAt      DateTime     @default(now())
+  quiz           Quiz?
 }
 
 model Enrollment {
@@ -55,4 +57,39 @@ model CompletedLecture {
   lecture    Lecture @relation(fields: [lectureId], references: [id])
 
   @@unique([studentId, lectureId])
+}
+
+model Quiz {
+  id        Int        @id @default(autoincrement())
+  courseId  Int        @unique
+  course    Course     @relation(fields: [courseId], references: [id])
+  questions Question[]
+  attempts  QuizAttempt[]
+}
+
+model Question {
+  id      Int      @id @default(autoincrement())
+  quizId  Int
+  text    String
+  quiz    Quiz     @relation(fields: [quizId], references: [id])
+  options Option[]
+}
+
+model Option {
+  id         Int      @id @default(autoincrement())
+  questionId Int
+  text       String
+  isCorrect  Boolean  @default(false)
+  question   Question @relation(fields: [questionId], references: [id])
+}
+
+model QuizAttempt {
+  id        Int      @id @default(autoincrement())
+  studentId Int
+  quizId    Int
+  score     Int
+  passed    Boolean
+  createdAt DateTime @default(now())
+  student   Student  @relation(fields: [studentId], references: [id])
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
 }

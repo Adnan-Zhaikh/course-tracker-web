@@ -37,9 +37,21 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   }
-
-  return NextResponse.json({
-    studentName: enrollment.student.name,
-    courseTitle: enrollment.course.title,
+    const quizAttempt = await prisma.quizAttempt.findFirst({
+    where: { studentId, passed: true,
+      quiz: { courseId }
+    }
+  });
+  
+  if (!quizAttempt) {
+    return NextResponse.json(
+      { error: "Please pass the quiz first" },
+      { status: 403 }
+    );
+  }
+  
+    return NextResponse.json({
+      studentName: enrollment.student.name,
+      courseTitle: enrollment.course.title,
   });
 }
