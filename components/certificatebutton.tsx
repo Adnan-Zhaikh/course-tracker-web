@@ -19,31 +19,49 @@ export default function CertificateButton({ progressPercent, courseId, quizPasse
 
   const res = await fetch(`/api/certificate?courseId=${courseId}`, { method: "GET" });
 
-  if (!res.ok) {
-    alert("Complete the course first");
-    setLoading(false);
-    return;
-  }
-
-  const data = await res.json();
-
-  const jspdf = await import("jspdf");
-  const JsPDF = (jspdf as any).default || (jspdf as any).jsPDF;
-  const doc = new JsPDF();
-
-  doc.setFontSize(24);
-  doc.text("Certificate of Completion", 105, 40, { align: "center" });
-  doc.setFontSize(16);
-  doc.text("This certifies that", 105, 70, { align: "center" });
-  doc.setFontSize(20);
-  doc.text(data.studentName, 105, 90, { align: "center" });
-  doc.setFontSize(16);
-  doc.text("has successfully completed", 105, 110, { align: "center" });
-  doc.setFontSize(18);
-  doc.text(data.courseTitle, 105, 130, { align: "center" });
-
-  doc.save("certificate.pdf");
+if (!res.ok) {
+  alert("Complete the course and pass the quiz first");
   setLoading(false);
+  return;
+}
+
+const data = await res.json();
+
+// Load template and overlay text
+const { PDFDocument, rgb } = await import("pdf-lib");
+
+const templateRes = await fetch("/certificate-template.pdf");
+const templateBytes = await templateRes.arrayBuffer();
+
+const pdfDoc = await PDFDocument.load(templateBytes);
+const page = pdfDoc.getPages()[0];
+const { width } = page.getSize();
+
+// Draw student name above the line
+page.drawText(data.studentName, {
+  x: width / 2 - (data.studentName.length * 6),
+  y: 331,
+  size: 28,
+  color: rgb(0.05, 0.4, 0.35),
+});
+
+
+// Draw actual course title
+page.drawText(data.courseTitle, {
+  x: width / 2 - (data.courseTitle.length * 3.5),
+  y: 145,
+  size: 16,
+  color: rgb(0.2, 0.2, 0.2),
+});
+
+const pdfBytes = await pdfDoc.save();
+const blob = new Blob([pdfBytes], { type: "application/pdf" });
+const url = URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url;
+a.download = "certificate.pdf";
+a.click();
+URL.revokeObjectURL(url);
 }
   return (
   <div className="flex flex-col gap-2">
